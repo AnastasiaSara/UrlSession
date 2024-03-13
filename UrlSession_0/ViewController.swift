@@ -10,12 +10,7 @@ import UIKit
 class ViewController: UIViewController {
     
     let session = URLSession.shared
-    let url = "https://api.nytimes.com/svc/mostpopular/v2/emailed/30.json?api-key=bae8JDzv69KTGEbzAOG2xLnjAlmsWMoY"
-    let identifierCell = "identifier"
     var articles: [Article] = []
-    
-    let identifierSegue = "detailedInformation"
-    
     
     @IBOutlet var tableView: UITableView!
     @IBOutlet var activityIndicator: UIActivityIndicatorView!
@@ -32,23 +27,21 @@ class ViewController: UIViewController {
         fetchData()
     }
     
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard  segue.identifier == identifierSegue,
-               let detailVC = segue.destination as? DetailedInformationViewController 
+        guard segue.identifier == Constants.identifierSegue,
+              let detailVC = segue.destination as? DetailedInformationViewController
         else { return }
         
         detailVC.article = sender as? Article
     }
 }
 
-
 //MARK: - UITableViewDataSource, UITableViewDelegate
 
 extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: identifierCell, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Constants.identifierCell, for: indexPath)
         let article = articles[indexPath.row]
         
         cell.textLabel?.text = article.title
@@ -63,18 +56,15 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let info = articles[indexPath.row]
-        performSegue(withIdentifier: identifierSegue, sender: info)
+        performSegue(withIdentifier: Constants.identifierSegue, sender: info)
     }
-    
 }
 
-
-
-// MARK: - ViewController
+// MARK: - Network
 
 extension ViewController {
     private func fetchData() {
-        guard let url = URL(string: url) else { return }
+        guard let url = URL(string: Constants.url) else { return }
         session.dataTask(with: url) { data, _, error in
             guard let data = data else {
                 print(error?.localizedDescription ?? "No error description")
@@ -95,6 +85,10 @@ extension ViewController {
             }
         }.resume()
     }
-    
 }
 
+private enum Constants {
+    static let identifierCell = "identifier"
+    static let url = "https://api.nytimes.com/svc/mostpopular/v2/emailed/30.json?api-key=bae8JDzv69KTGEbzAOG2xLnjAlmsWMoY"
+    static let identifierSegue = "detailedInformation"
+}

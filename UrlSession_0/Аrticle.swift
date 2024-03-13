@@ -10,7 +10,6 @@ struct Response: Decodable {
     let results: [Article]
 }
 
-
 struct Article: Decodable {
     let section: String?
     let title: String?
@@ -21,13 +20,11 @@ struct Article: Decodable {
     let updated: String?
     let media: [Media]?
     
-    
     enum CodingKeys: String, CodingKey {
         case section, title, abstract, byline, source, updated, media
         case publishedDate = "published_date"
     }
 }
-
 
 struct Media: Decodable {
     let mediaMetadata: [MediaMetadata]?
@@ -37,10 +34,6 @@ struct Media: Decodable {
     }
 }
 
-
 struct MediaMetadata: Decodable {
     let url: URL?
-
 }
-
-

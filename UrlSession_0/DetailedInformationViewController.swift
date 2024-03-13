@@ -9,7 +9,6 @@ import UIKit
 
 class DetailedInformationViewController: UIViewController {
     
-    
     @IBOutlet var detailedImage: UIImageView!
     @IBOutlet var titleArticle: UILabel!
     @IBOutlet var abstractArticle: UILabel!
@@ -28,14 +27,12 @@ class DetailedInformationViewController: UIViewController {
         
         publishedDateArticle.sizeToFit()
         
-        
         titleArticle.text = article?.title
         abstractArticle.text = article?.abstract
         sourceArticle.text = article?.source
         publishedDateArticle.text = "Date of publication: \(article?.publishedDate ?? "")"
         updatedArticle.text = "Date of change: \(article?.updated ?? "no changes")"
         byLineArticle.text = article?.byline
-        
         
         DispatchQueue.global().async {
             guard let urlImage = self.article?.media?.first?.mediaMetadata?.last?.url else { return }
@@ -45,7 +42,5 @@ class DetailedInformationViewController: UIViewController {
                 self.detailedImage.image = UIImage(data: imageData)
             }
         }
-        
     }
-    
 }
